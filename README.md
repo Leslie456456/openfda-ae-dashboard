@@ -5,6 +5,23 @@ specific drug-reaction pair to explore the clinical story behind the signal.
 Built on the FDA's [openFDA](https://open.fda.gov/apis/drug/event/) API over
 FAERS (the FDA Adverse Event Reporting System, ~20M+ spontaneous reports).
 
+## What's new — June 26 2026
+
+**Drug-AE Pair Deep Dive module** added. After loading any drug, pick a specific
+reaction from the top 15 list to get a full clinical profile of that drug-reaction
+pair, including:
+
+- ROR with 95% CI and three-part signal flag (van Puijenbroek 2002)
+- FDA label check — is this reaction listed in the current label?
+- Confounding by indication detection — flags disease-related terms (e.g. cancer
+  progression for oncology drugs) that inflate ROR artificially
+- Seriousness comparison — pair vs. drug overall
+- De-challenge filtered to HCP reporters only
+- Top co-reported (concomitant) drugs
+- Full pair demographics, outcomes, trend, and countries
+
+---
+
 ## What it shows
 
 ### Drug overview
