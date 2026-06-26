@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 AGE_ORDER = ["Neonate", "Infant", "Child", "Adolescent", "Adult", "Elderly"]
 
@@ -65,6 +66,53 @@ def countries_bar(countries):
         title="Top Reporting Countries",
     )
     return fig
+
+def concomitant_bar(drugs):
+    df = pd.DataFrame(drugs)
+    fig = px.bar(
+        df, x="count", y="drug", orientation="h",
+        labels={"count": "Reports", "drug": ""},
+        title="Top Co-reported Drugs",
+    )
+    fig.update_layout(yaxis=dict(autorange="reversed"))
+    return fig
+
+def dechallenge_bar(actions):
+    df = pd.DataFrame(actions)
+    fig = px.bar(
+        df, x="count", y="action", orientation="h",
+        labels={"count": "Reports", "action": ""},
+        title="Drug Action at Time of AE (De-challenge)",
+    )
+    fig.update_layout(yaxis=dict(autorange="reversed"))
+    return fig
+
+def ror_indicator(ror, ci_low, ci_high):
+    fig = go.Figure(go.Scatter(
+        x=[ror],
+        y=[""],
+        mode="markers",
+        marker=dict(size=16, color="#e15759", symbol="diamond"),
+        error_x=dict(
+            type="data",
+            symmetric=False,
+            array=[ci_high - ror],
+            arrayminus=[ror - ci_low],
+            color="#636efa",
+            thickness=3,
+            width=8,
+        ),
+    ))
+    fig.add_vline(x=1.0, line_dash="dash", line_color="gray")
+    fig.update_layout(
+        title=f"ROR = {ror:.2f}  (95% CI: {ci_low:.2f} – {ci_high:.2f})",
+        xaxis_title="Reporting Odds Ratio",
+        yaxis=dict(visible=False),
+        height=220,
+        margin=dict(t=50, b=30, l=20, r=20),
+    )
+    return fig
+
 
 if __name__ == "__main__":
     import api
